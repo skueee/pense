@@ -2,8 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
+
+	"github.com/skueee/pense/pkg/configfile"
 )
 
 // addCmd represents the add command
@@ -19,6 +22,11 @@ The command will then be available for later use.`,
 		name := args[0]
 		command := args[1]
 		fmt.Printf("add called with %s for the name and %s for the command\n", name, command)
+		configPath, err := configfile.GetConfigPath()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("Config path : %s\n", configPath)
 	},
 }
 
