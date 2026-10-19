@@ -1,6 +1,5 @@
 /*
 Copyright © 2026 skueee skueee@outlook.com
-
 */
 package main
 
