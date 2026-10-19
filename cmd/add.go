@@ -9,6 +9,9 @@ import (
 	"github.com/skueee/pense/pkg/configfile"
 )
 
+var keywords []string
+var note string
+
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add [name] [command]",
@@ -27,6 +30,7 @@ The command will then be available for later use.`,
 			log.Fatal(err)
 		}
 		fmt.Printf("Config path : %s\n", configPath)
+		configfile.AddCommand(configPath, name, command, keywords, note)
 	},
 }
 
@@ -35,11 +39,6 @@ func init() {
 
 	// Here you will define your flags and configuration settings.
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// addCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	addCmd.Flags().StringSliceVarP(&keywords, "keywords", "k", []string{}, "add keyword (repeatable)")
+	addCmd.Flags().StringVarP(&note, "note", "n", "", "add note")
 }
