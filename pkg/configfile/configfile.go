@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 )
 
+// Gets the config path from the debug environment variable or the common path on the user's system
 func GetConfigPath() (string, error) {
 	configEnv := os.Getenv("PENSE_PATH")
 	if configEnv != "" {
@@ -24,6 +25,7 @@ func GetConfigPath() (string, error) {
 	}
 }
 
+// A command in the JSON commands file
 type Command struct {
 	Name     string `json:"name"`
 	Command  string `json:"command"`
@@ -31,6 +33,7 @@ type Command struct {
 	Note     string `json:"note"`
 }
 
+// Gets the commands present in the json
 func GetCommands(configPath string) []Command {
 	file, err := os.ReadFile(filepath.Join(configPath, "commands.json"))
 	if err != nil {
@@ -46,6 +49,7 @@ func GetCommands(configPath string) []Command {
 	return commands
 }
 
+// Adds a command, after checking if the command can be added
 func AddCommand(configPath string, cmdName string, cmdExec string, cmdKeywords []string, cmdNote string) error {
 	var configs []Command
 	fileData, err := os.ReadFile(filepath.Join(configPath, "commands.json"))
@@ -53,6 +57,7 @@ func AddCommand(configPath string, cmdName string, cmdExec string, cmdKeywords [
 		_ = json.Unmarshal(fileData, &configs)
 	}
 
+	// Iterates over every command to check if a command with a similar name already exists
 	for i:= 0; i < len(configs); i++ {
 		if configs[i].Name == cmdName {
 			return fmt.Errorf("a command can't have the same name as an already existing command")
@@ -77,5 +82,6 @@ func AddCommand(configPath string, cmdName string, cmdExec string, cmdKeywords [
 		return fmt.Errorf("failed to write file: %w", err)
 	}
 
+	// No error, nice :)
 	return nil
 }
