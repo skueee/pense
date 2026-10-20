@@ -30,7 +30,10 @@ The command will then be available for later use.`,
 			log.Fatal(err)
 		}
 		fmt.Printf("Config path : %s\n", configPath)
-		configfile.AddCommand(configPath, name, command, keywords, note)
+		err = configfile.AddCommand(configPath, name, command, keywords, note)
+		if err != nil {
+			log.Fatalf("Error: %v", err)
+		}
 	},
 }
 
