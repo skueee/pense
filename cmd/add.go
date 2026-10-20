@@ -24,15 +24,17 @@ The command will then be available for later use.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		name := args[0]
 		command := args[1]
-		fmt.Printf("add called with %s for the name and %s for the command\n", name, command)
+
 		configPath, err := configfile.GetConfigPath()
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("Config path : %s\n", configPath)
+
 		err = configfile.AddCommand(configPath, name, command, keywords, note)
 		if err != nil {
 			log.Fatalf("Error: %v", err)
+		} else {
+			fmt.Printf("Saved command !")
 		}
 	},
 }

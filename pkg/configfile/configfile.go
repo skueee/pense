@@ -55,7 +55,7 @@ func AddCommand(configPath string, cmdName string, cmdExec string, cmdKeywords [
 
 	for i:= 0; i < len(configs); i++ {
 		if configs[i].Name == cmdName {
-			return fmt.Errorf("A command can't have the same name has an already existing command")
+			return fmt.Errorf("a command can't have the same name as an already existing command")
 		}
 	}
 
