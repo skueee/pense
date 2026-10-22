@@ -29,6 +29,7 @@ Any flag will turn it into "advanced" mode, which is case-sensitive`,
 		}
 		commands := configfile.GetCommands(path)
 		searchResult := search.Search(args[0], commands)
+
 		for _, result := range searchResult {
 			fmt.Printf("%s   %s\n", result.Name, result.Command)
 		}

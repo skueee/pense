@@ -13,11 +13,13 @@ import (
 	"github.com/skueee/pense/pkg/configfile"
 )
 
+// A struct to save a command with a score
 type ScoredCommand struct {
 	Command configfile.Command
 	Score   float64
 }
 
+// Takes two strings and returns a similarity score
 func SearchAlgo(request string, target string) float64 {
 
 	if request == target {
@@ -39,6 +41,7 @@ func SearchAlgo(request string, target string) float64 {
    return 0
 }
 
+// Takes all the keywords from a command and returns the best score
 func SearchInKeywords(request string, command configfile.Command) float64 {
 	var bestMatch float64
 	for i := 0; i < len(command.Keywords); i++ {
@@ -50,6 +53,7 @@ func SearchInKeywords(request string, command configfile.Command) float64 {
 	return bestMatch
 }
 
+// Main function, takes a command and performs all the searches then sort the commands
 func Search(request string, commands []configfile.Command) []configfile.Command {
 	var searchResults []ScoredCommand
 
@@ -58,6 +62,7 @@ func Search(request string, commands []configfile.Command) []configfile.Command 
         noteScore := SearchAlgo(request, cmd.Note) * 0.8
         keywordsScore := SearchInKeywords(request, cmd) * 2
 
+        // Cuts program and args, because the user is more likely to search for the program than the args
         program, args, _ := strings.Cut(cmd.Command, " ")
         programScore := SearchAlgo(request, program) * 1.5
         argsScore := SearchAlgo(request, args) * 0.5
@@ -76,6 +81,7 @@ func Search(request string, commands []configfile.Command) []configfile.Command 
         return searchResults[i].Score > searchResults[j].Score
     })
 
+    // Retransforms all the ScoreCommand into Command
     var results []configfile.Command
     for _, i := range searchResults {
         results = append(results, i.Command)
