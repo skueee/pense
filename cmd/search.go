@@ -31,7 +31,7 @@ Any flag will turn it into "advanced" mode, which is case-sensitive`,
 func init() {
 	rootCmd.AddCommand(searchCmd)
 
-	addCmd.Flags().StringSliceP(&keywords, "keywords", "k", []string{}, "search for specific keywords")
-	addCmd.Flags().StringVarP(&program, "program", "p", string{}, "search for a command related to a specific program")
-	addCmd.Flags().StringVarP(&name, "name", "n", string{}, "search for a command with a specific name")
+	addCmd.Flags().StringSliceVarP(&keywords, "keywords", "k", []string{}, "search for specific keywords")
+	addCmd.Flags().StringVarP(&program, "program", "p", "", "search for a command related to a specific program")
+	addCmd.Flags().StringVarP(&name, "name", "n", "", "search for a command with a specific name")
 }
