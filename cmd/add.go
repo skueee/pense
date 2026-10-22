@@ -9,8 +9,8 @@ import (
 	"github.com/skueee/pense/pkg/configfile"
 )
 
-var keywords []string
-var note string
+var addKeywordsFlag []string
+var addNoteFlag string
 
 // addCmd represents the add command
 var addCmd = &cobra.Command{
@@ -30,7 +30,7 @@ The command will then be available for later use.`,
 			log.Fatal(err)
 		}
 
-		err = configfile.AddCommand(configPath, name, command, keywords, note)
+		err = configfile.AddCommand(configPath, name, command, addKeywordsFlag, addNoteFlag)
 		if err != nil {
 			log.Fatalf("Error: %v", err)
 		} else {
@@ -44,6 +44,6 @@ func init() {
 
 	// Here you will define your flags and configuration settings.
 
-	addCmd.Flags().StringSliceVarP(&keywords, "keywords", "k", []string{}, "add keyword (repeatable)")
-	addCmd.Flags().StringVarP(&note, "note", "n", "", "add note")
+	addCmd.Flags().StringSliceVarP(&addKeywordsFlag, "keywords", "k", []string{}, "add keyword (repeatable)")
+	addCmd.Flags().StringVarP(&addNoteFlag, "note", "n", "", "add note")
 }
