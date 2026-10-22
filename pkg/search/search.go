@@ -5,6 +5,7 @@
 package search
 
 import (
+	"slices"
 	"sort"
 	"strings"
 
@@ -88,4 +89,53 @@ func Search(request string, commands []configfile.Command) []configfile.Command 
     }
 
     return results
+}
+
+
+type SearchParams struct {
+	Name      string
+	Keywords []string
+	Program   string
+}
+
+func AdvancedSearch(params SearchParams, commands []configfile.Command) []configfile.Command {
+	var result []configfile.Command
+
+	for _, cmd := range commands {
+
+		// Check if the name matches
+		if params.Name != "" {
+			if params.Name == cmd.Name {
+				result = append(result, cmd)
+				continue
+			}
+		}
+
+		// Check if the keywords match
+		if len(params.Keywords) > 0 {
+			match := false
+			for _, keyword := range params.Keywords {
+				if slices.Contains(cmd.Keywords, keyword) {
+					match = true
+					break
+				}
+			}
+			if match == true {
+				result = append(result, cmd)
+				continue
+			}
+		}
+
+
+		// Check if the program match
+		if params.Program != "" {
+			program, _, _ := strings.Cut(cmd.Command, " ")
+			if params.Program == program {
+				result = append(result, cmd)
+				continue
+			}
+		}
+	}
+
+	return result
 }

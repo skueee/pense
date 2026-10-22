@@ -28,10 +28,24 @@ Any flag will turn it into "advanced" mode, which is case-sensitive`,
 			panic(err)
 		}
 		commands := configfile.GetCommands(path)
-		searchResult := search.Search(args[0], commands)
 
-		for _, result := range searchResult {
-			fmt.Printf("%s   %s\n", result.Name, result.Command)
+		var searchResult []configfile.Command
+		if len(args) > 0 {
+			searchResult = search.Search(args[0], commands)
+		} else if len(searchKeywordsFlag) > 0 || searchProgramFlag != "" || searchNameFlag != "" {
+			searchResult = search.AdvancedSearch(search.SearchParams{
+				Name: searchNameFlag,
+				Keywords: searchKeywordsFlag,
+				Program: searchProgramFlag,
+			}, commands)
+		} else {
+			fmt.Print("Please add something to search for, or use --help to get the usage\n")
+		}
+
+		if len(searchResult) > 0 {
+			for _, result := range searchResult {
+				fmt.Printf("%s   %s\n", result.Name, result.Command)
+			}
 		}
 	},
 }
