@@ -64,7 +64,7 @@ func Search(request string, commands []configfile.Command) []configfile.Command 
 
         totalScore := nameScore + noteScore + keywordsScore + programScore + argsScore
 
-        if totalScore > 5 {
+        if totalScore > 0.75 {
             searchResults = append(searchResults, ScoredCommand{
                 Command: cmd,
                 Score:   totalScore,
